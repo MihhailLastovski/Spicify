@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Spicify.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +11,7 @@ namespace Spicify
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new TestPage();
         }
 
         protected override void OnStart()
