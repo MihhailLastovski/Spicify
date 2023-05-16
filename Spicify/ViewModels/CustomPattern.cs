@@ -13,13 +13,26 @@ namespace Spicify.ViewModels
         private ImageSource imageSource;
         private ICommand buttonCommand;
 
+        private double cellSize;
+        public double CellSize
+        {
+            get { return cellSize; }
+            set
+            {
+                if (cellSize != value)
+                {
+                    cellSize = value;
+                    OnPropertyChanged("CellSize");
+                }
+            }
+        }
         public string NameLabel 
         {
             get { return nameLabel; }
             set 
             { 
                 nameLabel = value; 
-                OnPropertyChanged("Name");
+                OnPropertyChanged("NameLabel");
             }
         }
         public ImageSource ImageSource

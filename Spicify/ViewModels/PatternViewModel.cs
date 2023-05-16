@@ -11,20 +11,22 @@ namespace Spicify.ViewModels
     {
         public ObservableCollection<CustomPattern> Patterns { get; set; }
 
-        public PatternViewModel() 
+        public PatternViewModel()
         {
             Patterns = new ObservableCollection<CustomPattern>();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 20; i++)
             {
                 CustomPattern pattern = new CustomPattern
                 {
-                    NameLabel = i.ToString(),
+                    NameLabel = (i + 1).ToString(),
                     ImageSource = null,
                     ButtonCommand = new Command(() => ButtonClicked(i)),
                 };
+                Patterns.Add(pattern);
             }
         }
+
 
         private void ButtonClicked(int i)
         {

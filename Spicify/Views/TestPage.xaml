@@ -1,20 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Spicify.ViewModels"
              x:Class="Spicify.Views.TestPage">
+    <ContentPage.BindingContext>
+        <viewModels:PatternViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <ListView ItemsSource ="{Binding controls}">
-                <ListView.ItemTemplate>
+        <ScrollView>
+            <FlexLayout Wrap="Wrap" JustifyContent="SpaceEvenly">
+                <BindableLayout.ItemsSource>
+                    <Binding Path="Patterns" />
+                </BindableLayout.ItemsSource>
+                <BindableLayout.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <Label Text="{Binding nameLabel}"/>
-                            <Image Source="{Binding imageSource}"/>
-                            <Button Text="Click" Command="{Binding buttonCommand}"/>
-                        </StackLayout>
+                        <Frame WidthRequest="150" HeightRequest="150" Margin="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding NameLabel}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Image Source="{Binding ImageSource}" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Button Command="{Binding Button}" Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Grid>
+                        </Frame>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
