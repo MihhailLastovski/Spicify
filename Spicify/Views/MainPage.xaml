@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewModels="clr-namespace:Spicify.ViewModels"
+             x:Class="Spicify.Views.MainPage">
+        <ContentPage.BindingContext>
+            <viewModels:PatternViewModel />
+        </ContentPage.BindingContext>
+        <ContentPage.Content>
+            <ScrollView>
+                <FlexLayout Wrap="Wrap" JustifyContent="SpaceEvenly">
+                    <BindableLayout.ItemsSource>
+                        <Binding Path="Patterns" />
+                    </BindableLayout.ItemsSource>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Frame WidthRequest="150" HeightRequest="150" Margin="2" BorderColor="Black" CornerRadius="10">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Label Text="{Binding NameLabel}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Image Source="{Binding ImageSource}" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Button Command="{Binding Button}" Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </ScrollView>
+        </ContentPage.Content>
+</ContentPage>

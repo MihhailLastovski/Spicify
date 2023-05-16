@@ -1,5 +1,4 @@
-﻿using Spicify.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Spicify.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TestPage : ContentPage
+    public partial class MainPage : ContentPage
     {
-        public TestPage()
+        public MainPage()
         {
             InitializeComponent();
         }
