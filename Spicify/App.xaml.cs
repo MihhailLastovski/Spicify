@@ -11,7 +11,7 @@ namespace Spicify
         {
             InitializeComponent();
 
-            MainPage = new Navigation();
+            MainPage = new ReceiptPage();
         }
 
         protected override void OnStart()

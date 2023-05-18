@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewModels="clr-namespace:Spicify.ViewModels"
+             x:Class="Spicify.Views.ReceiptPage">
+    <ContentPage.BindingContext>
+        <viewModels:PatternViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <FlexLayout Wrap="Wrap" JustifyContent="SpaceEvenly">
+                <BindableLayout.ItemsSource>
+                    <Binding Path="Patterns" />
+                </BindableLayout.ItemsSource>
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Frame WidthRequest="150" HeightRequest="150" Margin="2" BorderColor="Black" CornerRadius="10">
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding NameLabel}" HorizontalOptions="Center" VerticalOptions="Start" FontSize="18"/>
+                                <Image Source="{Binding ImageSource}" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="65"/>
+                                <Image Source="{Binding ImageButton}" HorizontalOptions="End" VerticalOptions="End" HeightRequest="25">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="ImageChangeTapped"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -11,30 +11,19 @@ namespace Spicify.ViewModels
     {
         private string nameLabel;
         private ImageSource imageSource;
-        private ICommand buttonCommand;
+        private ImageSource imageButton;
+        private bool isFavorite;
 
-        private double cellSize;
-        public double CellSize
-        {
-            get { return cellSize; }
-            set
-            {
-                if (cellSize != value)
-                {
-                    cellSize = value;
-                    OnPropertyChanged("CellSize");
-                }
-            }
-        }
-        public string NameLabel 
+        public string NameLabel
         {
             get { return nameLabel; }
-            set 
-            { 
-                nameLabel = value; 
+            set
+            {
+                nameLabel = value;
                 OnPropertyChanged("NameLabel");
             }
         }
+
         public ImageSource ImageSource
         {
             get { return imageSource; }
@@ -44,13 +33,24 @@ namespace Spicify.ViewModels
                 OnPropertyChanged("Source");
             }
         }
-        public ICommand ButtonCommand
+
+        public ImageSource ImageButton
         {
-            get { return buttonCommand; }
+            get { return imageButton; }
             set
             {
-                buttonCommand = value;
-                OnPropertyChanged("Button");
+                imageButton = value;
+                OnPropertyChanged("Image");
+            }
+        }
+
+        public bool IsFavorite
+        {
+            get { return isFavorite; }
+            set
+            {
+                isFavorite = value;
+                OnPropertyChanged("Favorite");
             }
         }
 
