@@ -9,32 +9,19 @@ namespace Spicify.ViewModels
 {
     public class PatternViewModel : INotifyPropertyChanged
     {
-        private string _imageButton;
-        public string ImageButton
-        {
-            get { return _imageButton; }
-            set
-            {
-                if (_imageButton != value)
-                {
-                    _imageButton = value;
-                    OnPropertyChanged(nameof(ImageButton));
-                }
-            }
-        }
         public ObservableCollection<CustomPattern> Patterns { get; set; }
 
         public PatternViewModel()
         {
             Patterns = new ObservableCollection<CustomPattern>();
 
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 4; i++)
             {
                 CustomPattern pattern = new CustomPattern
                 {
-                    NameLabel = (i + 1).ToString(),
-                    ImageSource = ImageSource.FromFile("unfav.png"),
-                    ImageButton = ImageSource.FromFile("unfav.png"),
+                    NameLabel = RecipeAPI.GetRandomRecipe().Name,
+                    ImageSource = RecipeAPI.GetRandomRecipe().Image,
+                    ImageButton = null,
                     IsFavorite = false,
                     
                 };

@@ -11,9 +11,9 @@ using Xamarin.Forms.Xaml;
 namespace Spicify.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ReceiptPage : ContentPage
+    public partial class Recipe : ContentPage
     {
-        public ReceiptPage()
+        public Recipe()
         {
             PatternViewModel viewModel = new PatternViewModel();
             this.BindingContext = viewModel;
@@ -33,22 +33,23 @@ namespace Spicify.Views
                 Frame frame = new Frame
                 {
                     WidthRequest = 150,
-                    HeightRequest = 150,
-                    Margin = new Thickness(2),
+                    HeightRequest = 180,
                     BorderColor = Color.Black,
-                    CornerRadius = 10
+                    CornerRadius = 10,
+                    Margin = new Thickness(2),
                 };
 
                 StackLayout stackLayout = new StackLayout
                 {
-                    Orientation = StackOrientation.Vertical
+                    Orientation = StackOrientation.Vertical,
                 };
 
                 Label nameLabel = new Label
                 {
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Start,
-                    FontSize = 18
+                    FontSize = 18,
+                    HeightRequest = 70
                 };
                 nameLabel.SetBinding(Label.TextProperty, "NameLabel");
 
@@ -56,7 +57,10 @@ namespace Spicify.Views
                 {
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    HeightRequest = 65
+                    HeightRequest = 180,
+                    WidthRequest = 130,
+                    Aspect = Aspect.AspectFill
+
                 };
                 image.SetBinding(Image.SourceProperty, "ImageSource");
 
@@ -64,9 +68,8 @@ namespace Spicify.Views
                 {
                     HorizontalOptions = LayoutOptions.End,
                     VerticalOptions = LayoutOptions.End,
-                    HeightRequest = 25
+                    Source = ImageSource.FromFile("unfav.png"),
                 };
-                imageButton.SetBinding(Image.SourceProperty, "ImageButton");
 
                 TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
                 tapGestureRecognizer.Tapped += ImageChangeTapped;
@@ -90,18 +93,20 @@ namespace Spicify.Views
 
         private void ImageChangeTapped(object sender, EventArgs e)
         {
-            PatternViewModel viewModel = (PatternViewModel)BindingContext;
+            //Image image = (Image)sender;
+            //image.Source = RecipeAPI.GetRandomRecipe();
 
-            ImageSource currentImage = viewModel.ImageButton;
-
-            if (currentImage.Equals(ImageSource.FromFile("fav.png")))
-            {
-                viewModel.ImageButton = ImageSource.FromFile("unfav.png").ToString();
-            }
-            else if (currentImage.Equals(ImageSource.FromFile("unfav.png")))
-            {
-                viewModel.ImageButton = ImageSource.FromFile("fav.png").ToString();
-            }
+            ////ImageSource imgSrc = image.Source;
+            ////ImageSource imgSrcFav = ImageSource.FromFile("fav.png");
+            ////ImageSource imgSrcUnFav = ImageSource.FromFile("unfav.png");
+            ////if (imgSrc == imgSrcUnFav)
+            ////{
+            ////    image.Source = ImageSource.FromFile("fav.png");
+            ////}
+            ////else if (imgSrc == imgSrcFav)
+            ////{
+            ////    image.Source = ImageSource.FromFile("unfav.png");
+            ////}
         }
     }
 }

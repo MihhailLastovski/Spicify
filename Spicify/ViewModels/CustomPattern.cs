@@ -4,53 +4,67 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Spicify.Models;
+using System.Xml;
 
 namespace Spicify.ViewModels
 {
     public class CustomPattern : INotifyPropertyChanged
     {
-        private string nameLabel;
-        private ImageSource imageSource;
-        private ImageSource imageButton;
-        private bool isFavorite;
+        PatternViewModel patternViewModel;
+        public Data Data { get; private set; }
+        public CustomPattern() 
+        {
+            Data = new Data();
+        }
+
+        public PatternViewModel PatternViewModel 
+        {
+            get { return patternViewModel; }
+            set 
+            {
+                patternViewModel = value;
+                OnPropertyChanged("PatternViewModel");
+            }
+        }
 
         public string NameLabel
         {
-            get { return nameLabel; }
+            get { return Data.NameLabel; }
             set
             {
-                nameLabel = value;
+                Data.NameLabel = value;
                 OnPropertyChanged("NameLabel");
             }
         }
 
         public ImageSource ImageSource
         {
-            get { return imageSource; }
+            get { return Data.ImageSource; }
             set
             {
-                imageSource = value;
-                OnPropertyChanged("Source");
+                Data.ImageSource = value;
+                OnPropertyChanged("ImageSource");
             }
         }
 
         public ImageSource ImageButton
         {
-            get { return imageButton; }
+            get { return Data.ImageButton; }
             set
             {
-                imageButton = value;
-                OnPropertyChanged("Image");
+                Data.ImageButton = value;
+                OnPropertyChanged("ImageButton");
             }
         }
 
         public bool IsFavorite
         {
-            get { return isFavorite; }
+            get { return Data.IsFavorite; }
             set
             {
-                isFavorite = value;
-                OnPropertyChanged("Favorite");
+                Data.IsFavorite = value;
+                OnPropertyChanged("IsFavorite");
             }
         }
 
