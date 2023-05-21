@@ -10,7 +10,7 @@ namespace Spicify
 {
     public class RecipeAPI
     {
-        public static MyObject GetRandomRecipe()
+        public static List<MyObject> GetRandomRecipes()
         {
             string url = $"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=6";
             WebRequest request = WebRequest.Create(url);
@@ -23,18 +23,32 @@ namespace Spicify
                 WebResponse response = (HttpWebResponse)request.GetResponse();
                 using (var reader = new StreamReader(response.GetResponseStream()))
                 {
-                    JObject recipe = JObject.Parse(reader.ReadToEnd());
-                    string imageSource = recipe["recipes"][0]["image"].ToString();
-                    string name = recipe["recipes"][0]["title"].ToString();
-                    MyObject getinfo = new MyObject();
-                    getinfo.Image = imageSource;
-                    getinfo.Name = name;
-                    
-                    return getinfo;
+                    JObject recipeData = JObject.Parse(reader.ReadToEnd());
+                    JArray recipes = (JArray)recipeData["recipes"];
+
+                    List<MyObject> recipeList = new List<MyObject>();
+
+                    foreach (JToken recipe in recipes)
+                    {
+                        string imageSource = recipe["image"].ToString();
+                        string name = recipe["title"].ToString();
+
+                        MyObject getinfo = new MyObject();
+                        getinfo.Image = imageSource;
+                        getinfo.Name = name;
+
+                        recipeList.Add(getinfo);
+                    }
+
+                    return recipeList;
                 }
             }
-            catch { return null; }
+            catch
+            {
+                return null;
+            }
         }
+
         public class MyObject
         {
             public string Image { get; set; }

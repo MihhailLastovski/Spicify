@@ -1,4 +1,5 @@
-﻿using Spicify.ViewModels;
+﻿using Spicify.Models;
+using Spicify.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +34,13 @@ namespace Spicify.Views
                 Frame frame = new Frame
                 {
                     WidthRequest = 150,
-                    HeightRequest = 180,
+                    HeightRequest = 220,
                     BorderColor = Color.Black,
                     CornerRadius = 10,
                     Margin = new Thickness(2),
                 };
+
+                RelativeLayout relativeLayout = new RelativeLayout();
 
                 StackLayout stackLayout = new StackLayout
                 {
@@ -49,7 +52,7 @@ namespace Spicify.Views
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Start,
                     FontSize = 18,
-                    HeightRequest = 70
+                    HeightRequest = 65
                 };
                 nameLabel.SetBinding(Label.TextProperty, "NameLabel");
 
@@ -57,32 +60,41 @@ namespace Spicify.Views
                 {
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    HeightRequest = 180,
-                    WidthRequest = 130,
-                    Aspect = Aspect.AspectFill
-
+                    HeightRequest = 190,
+                    WidthRequest = 150,
+                    Aspect = Aspect.AspectFit
                 };
                 image.SetBinding(Image.SourceProperty, "ImageSource");
 
                 Image imageButton = new Image
                 {
-                    HorizontalOptions = LayoutOptions.End,
-                    VerticalOptions = LayoutOptions.End,
-                    Source = ImageSource.FromFile("unfav.png"),
+                    HeightRequest = 45,
+                    WidthRequest = 45,
                 };
+                imageButton.SetBinding(Image.SourceProperty, "ImageButton");
+
+                relativeLayout.Children.Add(stackLayout,
+                    Constraint.RelativeToParent((parent) => parent.Width - frame.WidthRequest),
+                    Constraint.RelativeToParent((parent) => parent.Height - frame.HeightRequest));
+
+                relativeLayout.Children.Add(imageButton,
+                    Constraint.RelativeToParent((parent) => parent.Width - imageButton.WidthRequest),
+                    Constraint.RelativeToParent((parent) => parent.Height - imageButton.HeightRequest));
 
                 TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
+                TapGestureRecognizer tapGestureRecognizerFrame = new TapGestureRecognizer();
                 tapGestureRecognizer.Tapped += ImageChangeTapped;
                 imageButton.GestureRecognizers.Add(tapGestureRecognizer);
-
+                tapGestureRecognizerFrame.Tapped += FrameRecipeOpen;
+                frame.GestureRecognizers.Add(tapGestureRecognizerFrame);
                 stackLayout.Children.Add(nameLabel);
                 stackLayout.Children.Add(image);
-                stackLayout.Children.Add(imageButton);
 
-                frame.Content = stackLayout;
+                frame.Content = relativeLayout;
 
                 return new ContentView { Content = frame };
             });
+
 
             BindableLayout.SetItemTemplate(flexLayout, itemTemplate);
 
@@ -91,22 +103,40 @@ namespace Spicify.Views
             this.Content = scrollView;
         }
 
+        private async void FrameRecipeOpen(object sender, EventArgs e)
+        {
+            Frame imageButton = (Frame)sender;
+            CustomPattern pattern = (CustomPattern)imageButton.BindingContext;
+
+            // Создать и открыть страницу с деталями рецепта, передавая выбранный рецепт в конструкторе
+            // Создать экземпляр RecipeDetailsModel и установить свойства
+            RecipeDetailsModel recipeDetails = new RecipeDetailsModel
+            {
+                Name = pattern.Data.NameLabel,
+                Image = pattern.Data.ImageSource,
+            };
+
+            // Создать и открыть страницу с деталями рецепта, передавая экземпляр RecipeDetailsModel в конструкторе
+            RecipeDetailsPage detailsPage = new RecipeDetailsPage(new RecipeDetailsViewModel(recipeDetails));
+            Navigation.PushAsync(detailsPage);
+
+        }
+
         private void ImageChangeTapped(object sender, EventArgs e)
         {
-            //Image image = (Image)sender;
-            //image.Source = RecipeAPI.GetRandomRecipe();
+            Image imageButton = (Image)sender;
+            CustomPattern pattern = (CustomPattern)imageButton.BindingContext;
 
-            ////ImageSource imgSrc = image.Source;
-            ////ImageSource imgSrcFav = ImageSource.FromFile("fav.png");
-            ////ImageSource imgSrcUnFav = ImageSource.FromFile("unfav.png");
-            ////if (imgSrc == imgSrcUnFav)
-            ////{
-            ////    image.Source = ImageSource.FromFile("fav.png");
-            ////}
-            ////else if (imgSrc == imgSrcFav)
-            ////{
-            ////    image.Source = ImageSource.FromFile("unfav.png");
-            ////}
+            if (pattern.IsFavorite)
+            {
+                pattern.ImageButton = ImageSource.FromFile("unfav.png");
+                pattern.IsFavorite = false;
+            }
+            else
+            {
+                pattern.ImageButton = ImageSource.FromFile("fav.png");
+                pattern.IsFavorite = true;
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Spicify.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using Xamarin.Forms;
+using static Spicify.RecipeAPI;
 
 namespace Spicify.ViewModels
 {
@@ -14,14 +16,15 @@ namespace Spicify.ViewModels
         public PatternViewModel()
         {
             Patterns = new ObservableCollection<CustomPattern>();
+            List<MyObject> recipes = RecipeAPI.GetRandomRecipes();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 CustomPattern pattern = new CustomPattern
                 {
-                    NameLabel = RecipeAPI.GetRandomRecipe().Name,
-                    ImageSource = RecipeAPI.GetRandomRecipe().Image,
-                    ImageButton = null,
+                    NameLabel = recipes[i].Name,//RecipeAPI.GetRandomRecipe().Name,
+                    ImageSource = recipes[i].Image,//RecipeAPI.GetRandomRecipe().Image,
+                    ImageButton = ImageSource.FromFile("unfav.png"),
                     IsFavorite = false,
                     
                 };

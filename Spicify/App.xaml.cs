@@ -11,11 +11,11 @@ namespace Spicify
         {
             InitializeComponent();
 
-            MainPage = new Recipe();
         }
 
         protected override void OnStart()
         {
+            MainPage = new NavigationPage(new Recipe());
         }
 
         protected override void OnSleep()

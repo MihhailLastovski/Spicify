@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Spicify.ViewModels"
+             x:Class="Spicify.Views.RecipeDetailsPage">
+    <ContentPage.BindingContext>
+    <viewmodels:RecipeDetailsViewModel />
+    </ContentPage.BindingContext>
+    <ScrollView>
+        <StackLayout Margin="20" Orientation="Vertical">
+            <Label Text="{Binding Recipe.Name}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10" />
+            <Image Source="{Binding Recipe.Image}" Aspect="AspectFit" HeightRequest="200" Margin="0,0,0,10" />
+            <Label Text="Description" FontSize="18" FontAttributes="Bold" Margin="0,0,0,5" />
+            <Label Text="{Binding Recipe.Description}" FontSize="16" Margin="0,0,0,10" />
+            <Label Text="Ingredients" FontSize="18" FontAttributes="Bold" Margin="0,0,0,5" />
+            <ListView ItemsSource="{Binding Recipe.Ingredients}" Margin="0,0,0,10">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="Cooking Instructions" FontSize="18" FontAttributes="Bold" Margin="0,0,0,5" />
+            <Label Text="{Binding Recipe.CookingInstructions}" FontSize="16" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
