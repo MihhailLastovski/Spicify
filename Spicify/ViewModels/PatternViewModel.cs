@@ -22,10 +22,13 @@ namespace Spicify.ViewModels
             {
                 CustomPattern pattern = new CustomPattern
                 {
-                    NameLabel = recipes[i].Name,//RecipeAPI.GetRandomRecipe().Name,
-                    ImageSource = recipes[i].Image,//RecipeAPI.GetRandomRecipe().Image,
+                    NameLabel = recipes[i].Name,
+                    ImageSource = recipes[i].Image,
                     ImageButton = ImageSource.FromFile("unfav.png"),
+                    Description = recipes[i].Description,
                     IsFavorite = false,
+                    Ingredients = recipes[i].Ingredients,
+                    CookingInstructions = recipes[i].CookingInstructions
                     
                 };
                 Patterns.Add(pattern);

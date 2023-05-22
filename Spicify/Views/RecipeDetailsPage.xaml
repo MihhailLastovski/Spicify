@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:Spicify.ViewModels"
              x:Class="Spicify.Views.RecipeDetailsPage">
     <ContentPage.BindingContext>
-    <viewmodels:RecipeDetailsViewModel />
+        <viewmodels:RecipeDetailsViewModel />
     </ContentPage.BindingContext>
     <ScrollView>
         <StackLayout Margin="20" Orientation="Vertical">

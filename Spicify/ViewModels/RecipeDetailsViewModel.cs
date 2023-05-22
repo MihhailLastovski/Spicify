@@ -25,22 +25,7 @@ namespace Spicify.ViewModels
         }
         public RecipeDetailsViewModel()
         {
-            // Здесь вы должны получить данные рецепта, например, из API или другого источника данных
-            // В этом примере просто создается фиктивный рецепт
-
-            Recipe = new RecipeDetailsModel
-            {
-                Name = "Sample Recipe",
-                Image = ImageSource.FromFile("recipe_image.jpg"),
-                Description = "This is a sample recipe description.",
-                Ingredients = new ObservableCollection<string>
-                {
-                    "Ingredient 1",
-                    "Ingredient 2",
-                    "Ingredient 3"
-                },
-                CookingInstructions = "Sample cooking instructions."
-            };
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

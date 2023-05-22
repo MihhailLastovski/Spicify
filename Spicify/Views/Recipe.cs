@@ -16,6 +16,7 @@ namespace Spicify.Views
     {
         public Recipe()
         {
+
             PatternViewModel viewModel = new PatternViewModel();
             this.BindingContext = viewModel;
 
@@ -105,20 +106,20 @@ namespace Spicify.Views
 
         private async void FrameRecipeOpen(object sender, EventArgs e)
         {
-            Frame imageButton = (Frame)sender;
-            CustomPattern pattern = (CustomPattern)imageButton.BindingContext;
+            Frame frame = (Frame)sender;
+            CustomPattern pattern = (CustomPattern)frame.BindingContext;
 
-            // Создать и открыть страницу с деталями рецепта, передавая выбранный рецепт в конструкторе
-            // Создать экземпляр RecipeDetailsModel и установить свойства
             RecipeDetailsModel recipeDetails = new RecipeDetailsModel
             {
                 Name = pattern.Data.NameLabel,
                 Image = pattern.Data.ImageSource,
+                Description = pattern.Data.Description,
+                Ingredients = pattern.Data.Ingredients,
+                CookingInstructions = pattern.Data.CookingInstructions,
             };
 
-            // Создать и открыть страницу с деталями рецепта, передавая экземпляр RecipeDetailsModel в конструкторе
             RecipeDetailsPage detailsPage = new RecipeDetailsPage(new RecipeDetailsViewModel(recipeDetails));
-            Navigation.PushAsync(detailsPage);
+            await Navigation.PushAsync(detailsPage);
 
         }
 

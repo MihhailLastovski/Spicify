@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Spicify.Models;
 using System.Xml;
+using System.Collections.ObjectModel;
 
 namespace Spicify.ViewModels
 {
@@ -68,6 +69,35 @@ namespace Spicify.ViewModels
             }
         }
 
+        public string Description
+        {
+            get { return Data.Description; }
+            set
+            {
+                Data.Description = value;
+                OnPropertyChanged("Description");
+            }
+        }
+
+        public string CookingInstructions
+        {
+            get { return Data.CookingInstructions; }
+            set
+            {
+                Data.CookingInstructions = value;
+                OnPropertyChanged("CookingInstructions");
+            }
+        }
+
+        public List<string> Ingredients
+        {
+            get { return Data.Ingredients; }
+            set
+            {
+                Data.Ingredients = value;
+                OnPropertyChanged("Ingredients");
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName) 
