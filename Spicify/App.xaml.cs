@@ -10,7 +10,6 @@ namespace Spicify
         public App()
         {
             InitializeComponent();
-
         }
 
         protected override void OnStart()

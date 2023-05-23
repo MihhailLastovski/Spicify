@@ -63,7 +63,7 @@ namespace Spicify.Views
                     VerticalOptions = LayoutOptions.Center,
                     HeightRequest = 190,
                     WidthRequest = 150,
-                    Aspect = Aspect.AspectFit
+                    Aspect = Aspect.AspectFit,
                 };
                 image.SetBinding(Image.SourceProperty, "ImageSource");
 
