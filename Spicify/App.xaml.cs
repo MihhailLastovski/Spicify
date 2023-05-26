@@ -14,7 +14,7 @@ namespace Spicify
 
         protected override void OnStart()
         {
-            MainPage = new NavigationPage(new Recipe());
+            MainPage = new NavigationPage(new Shell());
         }
 
         protected override void OnSleep()

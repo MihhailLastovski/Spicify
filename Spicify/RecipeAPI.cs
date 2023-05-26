@@ -64,7 +64,6 @@ namespace Spicify
 
                     recipeList.Add(getinfo);
                     }
-
                     return recipeList;
                 }
             }
@@ -81,7 +80,6 @@ namespace Spicify
             public string Description { get; set; }
             public List<string> Ingredients { get; set; }
             public string CookingInstructions { get; set; }
-
 
         }
 
