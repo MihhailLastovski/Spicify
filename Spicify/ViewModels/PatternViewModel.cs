@@ -15,6 +15,11 @@ namespace Spicify.ViewModels
 
         public PatternViewModel()
         {
+            
+        }
+
+        public void RandomRecipe()
+        {
             Patterns = new ObservableCollection<CustomPattern>();
             List<MyObject> recipes = RecipeAPI.GetRandomRecipes();
 
@@ -29,13 +34,32 @@ namespace Spicify.ViewModels
                     IsFavorite = false,
                     Ingredients = recipes[i].Ingredients,
                     CookingInstructions = recipes[i].CookingInstructions
-                    
+
                 };
                 Patterns.Add(pattern);
             }
         }
 
+        public ObservableCollection<CustomPattern> SearchRecipesByIngredients()
+        {
+            ObservableCollection<CustomPattern> patterns = new ObservableCollection<CustomPattern>();
+            string[] ingrid = { "potato", "tomatos" };
+            List<MyObject> recipes = RecipeAPI.SearchRecipesByIngredients(ingrid);
 
+            for (int i = 0; i < 6; i++)
+            {
+                CustomPattern pattern = new CustomPattern
+                {
+                    NameLabel = recipes[i].Name,
+                    ImageSource = recipes[i].Image,
+                    ImageButton = ImageSource.FromFile("unfav.png"),
+                    IsFavorite = false,
+                };
+                patterns.Add(pattern);
+            }
+
+            return patterns;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

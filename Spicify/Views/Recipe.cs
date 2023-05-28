@@ -18,6 +18,8 @@ namespace Spicify.Views
         {
 
             PatternViewModel viewModel = new PatternViewModel();
+            viewModel.Patterns = viewModel.SearchRecipesByIngredients();
+
             this.BindingContext = viewModel;
 
             ScrollView scrollView = new ScrollView();

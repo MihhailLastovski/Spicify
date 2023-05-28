@@ -12,8 +12,62 @@ namespace Spicify
 {
     public class RecipeAPI
     {
-        public static List<MyObject> GetRandomRecipes()
+        private const string API_HOST = "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com";
+        private const string API_KEY = "be43cea060mshc4dd49f4a6c7a6fp1f9a6ejsn5aa22bdcfd70";
+
+        public static List<MyObject> SearchRecipesByIngredients(string[] ingredients)
         {
+            string joinedIngredients = string.Join("%2C", ingredients);
+            string url = $"https://{API_HOST}/recipes/findByIngredients?ingredients={joinedIngredients}&number=6&ignorePantry=true&ranking=1";
+
+            return SearchRecipes(url);
+        }
+
+        public static List<MyObject> SearchRecipesByName(string query)
+        {
+            string encodedQuery = Uri.EscapeDataString(query);
+            string url = $"https://{API_HOST}/recipes/search?query={encodedQuery}&number=6&offset=0&type=main%20course";
+
+            return SearchRecipes(url);
+        }
+
+        private static List<MyObject> SearchRecipes(string url)
+        {
+            WebRequest request = WebRequest.Create(url);
+            request.Headers["X-RapidAPI-Host"] = API_HOST;
+            request.Headers["X-RapidAPI-Key"] = API_KEY;
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            using (WebResponse response = request.GetResponse())
+            {
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    JArray recipes = JArray.Parse(reader.ReadToEnd());
+
+                    List<MyObject> recipeList = new List<MyObject>();
+
+                    foreach (JToken recipe in recipes)
+                    {
+                        string imageSource = recipe["image"].ToString();
+                        string name = recipe["title"].ToString();
+
+                        MyObject getinfo = new MyObject
+                        {
+                            Image = imageSource,
+                            Name = name,
+                        };
+
+                        
+
+                        recipeList.Add(getinfo);
+                    }
+
+                    return recipeList;
+                }
+            }
+        }
+            public static List<MyObject> GetRandomRecipes()
+            {
             string url = $"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?number=6";
             WebRequest request = WebRequest.Create(url);
             request.Headers["X-RapidAPI-Host"] = "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com";
