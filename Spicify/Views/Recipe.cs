@@ -14,17 +14,30 @@ namespace Spicify.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Recipe : ContentPage
     {
+        private PatternViewModel viewModel;
+        private FlexLayout flexLayout;
+
+
         public Recipe()
         {
+            ToolbarItem refreshButton = new ToolbarItem
+            {
+                Text = "Refresh",
+                IconImageSource = "refresh.png",
+                Order = ToolbarItemOrder.Primary,
+                Priority = 0
+            };
+            refreshButton.Clicked += RefreshButtonClicked;
+            ToolbarItems.Add(refreshButton);
 
-            PatternViewModel viewModel = new PatternViewModel();
-            viewModel.Patterns = viewModel.SearchRecipesByIngredients();
+            viewModel = new PatternViewModel();
+            viewModel.Patterns = viewModel.RandomRecipe();
 
-            this.BindingContext = viewModel;
+            BindingContext = viewModel;
 
             ScrollView scrollView = new ScrollView();
 
-            FlexLayout flexLayout = new FlexLayout
+            flexLayout = new FlexLayout
             {
                 Wrap = FlexWrap.Wrap,
                 JustifyContent = FlexJustify.SpaceEvenly
@@ -141,5 +154,13 @@ namespace Spicify.Views
                 pattern.IsFavorite = true;
             }
         }
+        private void RefreshButtonClicked(object sender, EventArgs e)
+        {
+            viewModel.Patterns = viewModel.RandomRecipe();
+            flexLayout.SetBinding(BindableLayout.ItemsSourceProperty, new Binding("Patterns"));
+        }
+
+
+
     }
 }

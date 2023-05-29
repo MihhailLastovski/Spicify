@@ -13,17 +13,14 @@ namespace Spicify.ViewModels
     {
         public ObservableCollection<CustomPattern> Patterns { get; set; }
 
-        public PatternViewModel()
-        {
-            
-        }
+        public PatternViewModel() { }
 
-        public void RandomRecipe()
+        public ObservableCollection<CustomPattern> RandomRecipe()
         {
             Patterns = new ObservableCollection<CustomPattern>();
             List<MyObject> recipes = RecipeAPI.GetRandomRecipes();
-
-            for (int i = 0; i < 6; i++)
+            ObservableCollection<CustomPattern> patterns = new ObservableCollection<CustomPattern>();
+            for (int i = 0; i < recipes.Count; i++)
             {
                 CustomPattern pattern = new CustomPattern
                 {
@@ -36,24 +33,51 @@ namespace Spicify.ViewModels
                     CookingInstructions = recipes[i].CookingInstructions
 
                 };
-                Patterns.Add(pattern);
+                patterns.Add(pattern);
             }
+
+            return patterns;
         }
 
-        public ObservableCollection<CustomPattern> SearchRecipesByIngredients()
+        public ObservableCollection<CustomPattern> SearchRecipesByIngredients(string[] ingredients)
         {
             ObservableCollection<CustomPattern> patterns = new ObservableCollection<CustomPattern>();
-            string[] ingrid = { "potato", "tomatos" };
-            List<MyObject> recipes = RecipeAPI.SearchRecipesByIngredients(ingrid);
+            List<MyObject> recipes = RecipeAPI.SearchRecipesByIngredients(ingredients);
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < recipes.Count; i++)
             {
                 CustomPattern pattern = new CustomPattern
                 {
                     NameLabel = recipes[i].Name,
                     ImageSource = recipes[i].Image,
                     ImageButton = ImageSource.FromFile("unfav.png"),
+                    Description = recipes[i].Description,
                     IsFavorite = false,
+                    Ingredients = recipes[i].Ingredients,
+                    CookingInstructions = recipes[i].CookingInstructions
+                };
+                patterns.Add(pattern);
+            }
+
+            return patterns;
+        }
+
+        public ObservableCollection<CustomPattern> SearchRecipes(string query)
+        {
+            ObservableCollection<CustomPattern> patterns = new ObservableCollection<CustomPattern>();
+            List<MyObject> recipes = RecipeAPI.SearchRecipesByName(query);
+
+            for (int i = 0; i < recipes.Count; i++)
+            {
+                CustomPattern pattern = new CustomPattern
+                {
+                    NameLabel = recipes[i].Name,
+                    ImageSource = recipes[i].Image,
+                    ImageButton = ImageSource.FromFile("unfav.png"),
+                    Description = recipes[i].Description,
+                    IsFavorite = false,
+                    Ingredients = recipes[i].Ingredients,
+                    CookingInstructions = recipes[i].CookingInstructions
                 };
                 patterns.Add(pattern);
             }
