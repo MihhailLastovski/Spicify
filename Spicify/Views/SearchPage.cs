@@ -69,7 +69,7 @@ namespace Spicify.Views
             }
         }      
 
-        private void InitializeScrollView(PatternViewModel viewModel, ObservableCollection<CustomPattern> fromApi)
+        public void InitializeScrollView(PatternViewModel viewModel, ObservableCollection<CustomPattern> fromApi)
         {
             viewModel.Patterns = fromApi;
 

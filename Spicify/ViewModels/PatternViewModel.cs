@@ -30,7 +30,8 @@ namespace Spicify.ViewModels
                     Description = recipes[i].Description,
                     IsFavorite = false,
                     Ingredients = recipes[i].Ingredients,
-                    CookingInstructions = recipes[i].CookingInstructions
+                    CookingInstructions = recipes[i].CookingInstructions,
+                    RecipeID = recipes[i].RecipeId
 
                 };
                 patterns.Add(pattern);
@@ -54,7 +55,8 @@ namespace Spicify.ViewModels
                     Description = recipes[i].Description,
                     IsFavorite = false,
                     Ingredients = recipes[i].Ingredients,
-                    CookingInstructions = recipes[i].CookingInstructions
+                    CookingInstructions = recipes[i].CookingInstructions,
+                    RecipeID = recipes[i].RecipeId
                 };
                 patterns.Add(pattern);
             }
@@ -65,7 +67,7 @@ namespace Spicify.ViewModels
         public ObservableCollection<CustomPattern> SearchRecipes(string query)
         {
             ObservableCollection<CustomPattern> patterns = new ObservableCollection<CustomPattern>();
-            List<MyObject> recipes = RecipeAPI.SearchRecipesByName(query);
+            List<MyObject> recipes = SearchRecipesByName(query);
 
             for (int i = 0; i < recipes.Count; i++)
             {
@@ -77,7 +79,32 @@ namespace Spicify.ViewModels
                     Description = recipes[i].Description,
                     IsFavorite = false,
                     Ingredients = recipes[i].Ingredients,
-                    CookingInstructions = recipes[i].CookingInstructions
+                    CookingInstructions = recipes[i].CookingInstructions,
+                    RecipeID = recipes[i].RecipeId
+                };
+                patterns.Add(pattern);
+            }
+
+            return patterns;
+        }
+
+        public ObservableCollection<CustomPattern> SearchRecipesInfoFavorite(List<int> ids)
+        {
+            ObservableCollection<CustomPattern> patterns = new ObservableCollection<CustomPattern>();
+            List<MyObject> recipes = GetRecipeInformation(ids);
+
+            for (int i = 0; i < recipes.Count; i++)
+            {
+                CustomPattern pattern = new CustomPattern
+                {
+                    NameLabel = recipes[i].Name,
+                    ImageSource = recipes[i].Image,
+                    ImageButton = ImageSource.FromFile("fav.png"),
+                    Description = recipes[i].Description,
+                    IsFavorite = false,
+                    Ingredients = recipes[i].Ingredients,
+                    CookingInstructions = recipes[i].CookingInstructions,
+                    RecipeID = recipes[i].RecipeId
                 };
                 patterns.Add(pattern);
             }

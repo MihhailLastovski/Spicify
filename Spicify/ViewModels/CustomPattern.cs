@@ -98,6 +98,15 @@ namespace Spicify.ViewModels
                 OnPropertyChanged("Ingredients");
             }
         }
+
+        public int RecipeID 
+        {
+            get { return Data.RecipeID; }
+            set 
+            { Data.RecipeID = value;
+              OnPropertyChanged("RecipeID");
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName) 

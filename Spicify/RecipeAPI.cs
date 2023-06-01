@@ -64,7 +64,7 @@ namespace Spicify
             }
         }
 
-        private static List<MyObject> GetRecipeInformation(List<int> ints)
+        public static List<MyObject> GetRecipeInformation(List<int> ints)
         {
             string ids = string.Join("%2C", ints);
             string url = $"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/informationBulk?ids={ids}";
@@ -84,11 +84,12 @@ namespace Spicify
                     {
                         string imageSource = recipe["image"].ToString();
                         string name = recipe["title"].ToString();
-
+                        int recipeId = int.Parse(recipe["id"].ToString());
+                        
                         MyObject getinfo = new MyObject();
                         getinfo.Image = imageSource;
                         getinfo.Name = name;
-
+                        getinfo.RecipeId = recipeId;
                         string summary = recipe["summary"].ToString();
                         string cleanedSummary = StripHTMLTags(summary);
                         getinfo.Description = cleanedSummary;
@@ -143,11 +144,11 @@ namespace Spicify
                     {
                         string imageSource = recipe["image"].ToString();
                         string name = recipe["title"].ToString();
-
+                        int recipeId = int.Parse(recipe["id"].ToString());
                         MyObject getinfo = new MyObject();
                         getinfo.Image = imageSource;
                         getinfo.Name = name;
-
+                        getinfo.RecipeId = recipeId;
                         string summary = recipe["summary"].ToString();
                         string cleanedSummary = StripHTMLTags(summary);
                         getinfo.Description = cleanedSummary;
@@ -185,6 +186,7 @@ namespace Spicify
             public string Description { get; set; }
             public List<string> Ingredients { get; set; }
             public string CookingInstructions { get; set; }
+            public int RecipeId { get; set; }
 
         }
 

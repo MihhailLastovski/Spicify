@@ -15,6 +15,7 @@ namespace Spicify.Models
         public string Description { get; set; }
         public List<string> Ingredients { get; set; }
         public string CookingInstructions { get; set; }
+        public int RecipeID { get; set; }
 
 
     }

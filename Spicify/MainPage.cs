@@ -12,8 +12,10 @@ namespace Spicify
     {
         public MainPage()
         {
-            var searchPage = new SearchPage();
-            var recipePage = new Recipe();
+            SearchPage searchPage = new SearchPage();
+            Recipe recipePage = new Recipe();
+            LoginRegisterPage loginRegisterPage = new LoginRegisterPage();
+            FavoritePage favoritePage = new FavoritePage();
 
             var searchNavigation = new NavigationPage(searchPage)
             {
@@ -24,6 +26,15 @@ namespace Spicify
             var recipeNavigation = new NavigationPage(recipePage)
             {
                 Title = "Recipe"
+            };
+
+            var regNavigation = new NavigationPage(loginRegisterPage)
+            {
+                Title = "SignUpIn"
+            };
+            var favNavigation = new NavigationPage(favoritePage)
+            {
+                Title = "Favorite"
             };
 
             Master = new ContentPage
@@ -47,6 +58,24 @@ namespace Spicify
                             Command = new Command(() =>
                             {
                                 Detail = recipeNavigation;
+                                IsPresented = false;
+                            })
+                        },
+                        new Button
+                        {
+                            Text = "SignUpIn",
+                            Command = new Command(() =>
+                            {
+                                Detail = regNavigation;
+                                IsPresented = false;
+                            })
+                        },
+                        new Button
+                        {
+                            Text = "Favorite",
+                            Command = new Command(() =>
+                            {
+                                Detail = favNavigation;
                                 IsPresented = false;
                             })
                         }

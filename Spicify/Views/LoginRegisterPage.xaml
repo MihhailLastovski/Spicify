@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Spicify.ViewModels"
+             x:Class="Spicify.Views.LoginRegisterPage">
+
+    <ContentPage.BindingContext>
+        <local:LoginRegisterViewModel />
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="20">
+        <Entry Text="{Binding Username}" Placeholder="Имя пользователя" />
+        <Entry Text="{Binding Password}" Placeholder="Пароль" IsPassword="True" />
+        <Button Text="Вход" Command="{Binding LoginCommand}" />
+        <Button Text="Регистрация" Command="{Binding RegisterCommand}" />
+    </StackLayout>
+</ContentPage>
