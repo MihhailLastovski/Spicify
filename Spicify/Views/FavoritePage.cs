@@ -162,7 +162,7 @@ namespace Spicify.Views
 
         private async List<int> ConvertTtoInt() 
         {
-            yield return await database.GetFavoriteRecipeIdsAsync(currentUserId);
+            yield return await database.GetFavoriteRecipeIdsAsync(currentUserId); //klass
         }
     }
 }
