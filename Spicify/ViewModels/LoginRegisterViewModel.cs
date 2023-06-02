@@ -69,8 +69,6 @@ namespace Spicify.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Успех", "Вход выполнен успешно", "OK");
                 Database.CurrentUser = user;
-                FavoritePage favoritePage = new FavoritePage();
-                favoritePage.InitializeAsync();
             }
             else
             {
