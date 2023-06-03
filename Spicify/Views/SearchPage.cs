@@ -1,4 +1,5 @@
 ﻿using Spicify.Models;
+using Spicify.Service;
 using Spicify.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Spicify.Views
         private Button searchButton;
         private StackLayout resultContainer;
         private StackLayout main;
-
+        private Database database = new Database("database.db3");
         public SearchPage()
         {
             searchEntry = new Entry
@@ -46,7 +47,7 @@ namespace Spicify.Views
 
         }
 
-        private void OnSearchButtonClicked(object sender, EventArgs e)
+        private async void OnSearchButtonClicked(object sender, EventArgs e)
         {
             string query = searchEntry.Text.Trim();
 
@@ -58,11 +59,11 @@ namespace Spicify.Views
                 if (query.Contains(" "))
                 {
                     string[] ingredients = query.Split(' ');
-                    InitializeScrollView(viewModel, viewModel.SearchRecipesByIngredients(ingredients));
+                    InitializeScrollView(viewModel, await viewModel.SearchRecipesByIngredients(ingredients));
                 }
                 else
                 {
-                    InitializeScrollView(viewModel ,viewModel.SearchRecipes(query));
+                    InitializeScrollView(viewModel ,await viewModel.SearchRecipes(query));
                 }
 
                 
@@ -183,7 +184,7 @@ namespace Spicify.Views
             await Navigation.PushAsync(detailsPage);
         }
 
-        private void ImageChangeTapped(object sender, EventArgs e)
+        private async void ImageChangeTapped(object sender, EventArgs e)
         {
             Image imageButton = (Image)sender;
             CustomPattern pattern = (CustomPattern)imageButton.BindingContext;
@@ -192,14 +193,24 @@ namespace Spicify.Views
             {
                 pattern.ImageButton = ImageSource.FromFile("unfav.png");
                 pattern.IsFavorite = false;
+                FavoriteRecipe favoriteRecipe = await database.GetFavoriteRecipe(pattern.RecipeID);
+                if (favoriteRecipe != null)
+                {
+                    await database.DeleteFavoriteRecipe(favoriteRecipe);
+                }
             }
             else
             {
                 pattern.ImageButton = ImageSource.FromFile("fav.png");
                 pattern.IsFavorite = true;
+                FavoriteRecipe favoriteRecipe = new FavoriteRecipe
+                {
+                    UserID = Database.CurrentUser.Id,
+                    RecipeID = pattern.RecipeID
+                };
+                await database.AddFavoriteRecipe(favoriteRecipe);
             }
+
         }
-
-
     }
 }

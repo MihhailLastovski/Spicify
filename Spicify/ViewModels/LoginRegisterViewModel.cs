@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Recipe = Spicify.Views.Recipe;
 
 namespace Spicify.ViewModels
 {
@@ -69,6 +70,8 @@ namespace Spicify.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Успех", "Вход выполнен успешно", "OK");
                 Database.CurrentUser = user;
+                MainPage mainPage = new MainPage();
+                Application.Current.MainPage = mainPage;
             }
             else
             {
@@ -90,7 +93,6 @@ namespace Spicify.ViewModels
                 };
 
                 await _databaseService.CreateUserAsync(user);
-
                 await Application.Current.MainPage.DisplayAlert("Успех", "Пользователь зарегистрирован", "OK");
             }
             else
@@ -98,6 +100,7 @@ namespace Spicify.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Ошибка", "Пользователь с таким именем уже существует", "OK");
             }
         }
+
     }
     public class BaseViewModel : INotifyPropertyChanged
     {

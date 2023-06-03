@@ -1,4 +1,5 @@
-﻿using Spicify.Views;
+﻿using Spicify.Service;
+using Spicify.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,17 @@ namespace Spicify
 {
     public class MainPage : MasterDetailPage
     {
+        private SearchPage searchPage;
+        private Recipe recipePage;
+        private LoginRegisterPage loginRegisterPage;
+        private FavoritePage favoritePage;
+
         public MainPage()
         {
-            SearchPage searchPage = new SearchPage();
-            Recipe recipePage = new Recipe();
-            LoginRegisterPage loginRegisterPage = new LoginRegisterPage();
-            FavoritePage favoritePage = new FavoritePage();
+            searchPage = new SearchPage();
+            recipePage = new Recipe();
+            loginRegisterPage = new LoginRegisterPage();
+            favoritePage = new FavoritePage();
 
             var searchNavigation = new NavigationPage(searchPage)
             {
@@ -28,10 +34,6 @@ namespace Spicify
                 Title = "Recipe"
             };
 
-            var regNavigation = new NavigationPage(loginRegisterPage)
-            {
-                Title = "SignUpIn"
-            };
             var favNavigation = new NavigationPage(favoritePage)
             {
                 Title = "Favorite"
@@ -63,27 +65,28 @@ namespace Spicify
                         },
                         new Button
                         {
-                            Text = "SignUpIn",
-                            Command = new Command(() =>
-                            {
-                                Detail = regNavigation;
-                                IsPresented = false;
-                            })
-                        },
-                        new Button
-                        {
                             Text = "Favorite",
                             Command = new Command(() =>
                             {
                                 Detail = favNavigation;
                                 IsPresented = false;
                             })
+                        },
+                        new Button
+                        {
+                            Text = "Logout",
+                            Command = new Command(() =>
+                            {
+                                Database.CurrentUser = null;
+                                Application.Current.MainPage = loginRegisterPage;
+                            })
                         }
+
                     }
                 }
             };
 
-            Detail = recipeNavigation;
+            Detail = searchNavigation;
 
             MasterBehavior = MasterBehavior.Popover;
 
@@ -92,6 +95,16 @@ namespace Spicify
                 : MasterBehavior.Split;
 
             NavigationPage.SetHasNavigationBar(this, false);
+
+            CheckLoginStatus();
+        }
+
+        private void CheckLoginStatus()
+        {
+            if (Database.CurrentUser != null)
+            {
+                Detail = new NavigationPage(recipePage);
+            }
         }
     }
 }

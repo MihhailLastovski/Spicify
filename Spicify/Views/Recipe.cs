@@ -16,9 +16,65 @@ namespace Spicify.Views
     {
         private PatternViewModel viewModel;
         private FlexLayout flexLayout;
-        private Database database;
+        private Database database = new Database("database.db3");
 
         public Recipe()
+        {
+            InitializeAsync();
+        }
+
+        private async void FrameRecipeOpen(object sender, EventArgs e)
+        {
+            Frame frame = (Frame)sender;
+            CustomPattern pattern = (CustomPattern)frame.BindingContext;
+
+            RecipeDetailsModel recipeDetails = new RecipeDetailsModel
+            {
+                Name = pattern.Data.NameLabel,
+                Image = pattern.Data.ImageSource,
+                Description = pattern.Data.Description,
+                Ingredients = pattern.Data.Ingredients,
+                CookingInstructions = pattern.Data.CookingInstructions,
+            };
+
+            RecipeDetailsPage detailsPage = new RecipeDetailsPage(new RecipeDetailsViewModel(recipeDetails));
+            await Navigation.PushAsync(detailsPage);
+
+        }
+
+        private async void ImageChangeTapped(object sender, EventArgs e)
+        {
+            Image imageButton = (Image)sender;
+            CustomPattern pattern = (CustomPattern)imageButton.BindingContext;
+
+            if (pattern.IsFavorite)
+            {
+                pattern.ImageButton = ImageSource.FromFile("unfav.png");
+                pattern.IsFavorite = false;
+                FavoriteRecipe favoriteRecipe = await database.GetFavoriteRecipe(pattern.RecipeID);
+                if (favoriteRecipe != null)
+                {
+                    await database.DeleteFavoriteRecipe(favoriteRecipe);
+                }
+            }
+            else
+            {
+                pattern.ImageButton = ImageSource.FromFile("fav.png");
+                pattern.IsFavorite = true;
+                FavoriteRecipe favoriteRecipe = new FavoriteRecipe
+                {
+                    UserID = Database.CurrentUser.Id,
+                    RecipeID = pattern.RecipeID
+                };
+                await database.AddFavoriteRecipe(favoriteRecipe);
+            }
+        }
+        private async void RefreshButtonClicked(object sender, EventArgs e)
+        {
+            await InitializeAsync();
+            flexLayout.SetBinding(BindableLayout.ItemsSourceProperty, new Binding("Patterns"));
+        }
+        private async Task InitializeAsync() 
         {
             database = new Database("database.db3");
             ToolbarItem refreshButton = new ToolbarItem
@@ -32,7 +88,7 @@ namespace Spicify.Views
             ToolbarItems.Add(refreshButton);
 
             viewModel = new PatternViewModel();
-            viewModel.Patterns = viewModel.RandomRecipe();
+            viewModel.Patterns = await viewModel.RandomRecipe();
 
             BindingContext = viewModel;
 
@@ -111,65 +167,11 @@ namespace Spicify.Views
 
                 return new ContentView { Content = frame };
             });
-
-
             BindableLayout.SetItemTemplate(flexLayout, itemTemplate);
 
             scrollView.Content = flexLayout;
 
             this.Content = scrollView;
-        }
-
-        private async void FrameRecipeOpen(object sender, EventArgs e)
-        {
-            Frame frame = (Frame)sender;
-            CustomPattern pattern = (CustomPattern)frame.BindingContext;
-
-            RecipeDetailsModel recipeDetails = new RecipeDetailsModel
-            {
-                Name = pattern.Data.NameLabel,
-                Image = pattern.Data.ImageSource,
-                Description = pattern.Data.Description,
-                Ingredients = pattern.Data.Ingredients,
-                CookingInstructions = pattern.Data.CookingInstructions,
-            };
-
-            RecipeDetailsPage detailsPage = new RecipeDetailsPage(new RecipeDetailsViewModel(recipeDetails));
-            await Navigation.PushAsync(detailsPage);
-
-        }
-
-        private async void ImageChangeTapped(object sender, EventArgs e)
-        {
-            Image imageButton = (Image)sender;
-            CustomPattern pattern = (CustomPattern)imageButton.BindingContext;
-
-            if (pattern.IsFavorite)
-            {
-                pattern.ImageButton = ImageSource.FromFile("unfav.png");
-                pattern.IsFavorite = false;
-                FavoriteRecipe favoriteRecipe = await database.GetFavoriteRecipe(pattern.RecipeID);
-                if (favoriteRecipe != null)
-                {
-                    await database.DeleteFavoriteRecipe(favoriteRecipe);
-                }
-            }
-            else
-            {
-                pattern.ImageButton = ImageSource.FromFile("fav.png");
-                pattern.IsFavorite = true;
-                FavoriteRecipe favoriteRecipe = new FavoriteRecipe
-                {
-                    UserID = Database.CurrentUser.Id,
-                    RecipeID = pattern.RecipeID
-                };
-                await database.AddFavoriteRecipe(favoriteRecipe);
-            }
-        }
-        private void RefreshButtonClicked(object sender, EventArgs e)
-        {
-            viewModel.Patterns = viewModel.RandomRecipe();
-            flexLayout.SetBinding(BindableLayout.ItemsSourceProperty, new Binding("Patterns"));
         }
 
 

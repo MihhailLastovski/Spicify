@@ -79,8 +79,15 @@ namespace Spicify.Service
 
         public async Task AddFavoriteRecipe(FavoriteRecipe favoriteRecipe)
         {
-            await _database.InsertAsync(favoriteRecipe);
+            FavoriteRecipe existingRecipe = await _database.Table<FavoriteRecipe>()
+                                               .FirstOrDefaultAsync(fr => fr.RecipeID == favoriteRecipe.RecipeID && fr.UserID == favoriteRecipe.UserID);
+
+            if (existingRecipe == null)
+            {
+                await _database.InsertAsync(favoriteRecipe);
+            }
         }
+
 
         public async Task DeleteFavoriteRecipe(FavoriteRecipe favoriteRecipe)
         {
