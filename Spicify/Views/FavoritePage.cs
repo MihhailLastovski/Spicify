@@ -23,7 +23,6 @@ namespace Spicify.Views
             ToolbarItem refreshButton = new ToolbarItem
             {
                 Text = "Refresh",
-                IconImageSource = "refresh.png",
                 Order = ToolbarItemOrder.Primary,
                 Priority = 0
             };
@@ -130,7 +129,8 @@ namespace Spicify.Views
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Start,
                     FontSize = 18,
-                    HeightRequest = 65
+                    HeightRequest = 65,
+                    TextColor = Color.Black,
                 };
                 nameLabel.SetBinding(Label.TextProperty, "NameLabel");
 

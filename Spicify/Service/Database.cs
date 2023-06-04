@@ -46,8 +46,11 @@ namespace Spicify.Service
 
         public async Task<List<Recipe>> GetRecipesAsync()
         {
-            return await _database.Table<Recipe>().ToListAsync();
+            return await _database.Table<Recipe>()
+                .Where(r => r.UserID == CurrentUser.Id)
+                .ToListAsync();
         }
+
 
         public async Task<int> CreateFavoriteRecipeAsync(FavoriteRecipe favoriteRecipe)
         {

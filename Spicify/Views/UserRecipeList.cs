@@ -7,18 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Spicify.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Recipe : ContentPage
+    public class UserRecipeList : ContentPage
     {
         private PatternViewModel viewModel;
         private FlexLayout flexLayout;
-        private Database database = new Database("database.db3");
 
-        public Recipe()
+        public UserRecipeList()
         {
             ToolbarItem refreshButton = new ToolbarItem
             {
@@ -28,7 +25,22 @@ namespace Spicify.Views
             };
             refreshButton.Clicked += RefreshButtonClicked;
             ToolbarItems.Add(refreshButton);
+            ToolbarItem addRecipe = new ToolbarItem
+            {
+                Text = "Add recipe",
+                Order = ToolbarItemOrder.Primary,
+                Priority = 0
+            };
+            addRecipe.Clicked += AddRecipe_Clicked; ;
+            ToolbarItems.Add(addRecipe);
             InitializeAsync();
+
+        }
+
+        private async void AddRecipe_Clicked(object sender, EventArgs e)
+        {
+            AddRecipePage addRecipePage = new AddRecipePage();
+            await Navigation.PushAsync(addRecipePage);
         }
 
         private async void FrameRecipeOpen(object sender, EventArgs e)
@@ -49,45 +61,17 @@ namespace Spicify.Views
             await Navigation.PushAsync(detailsPage);
 
         }
-
-        private async void ImageChangeTapped(object sender, EventArgs e)
-        {
-            Image imageButton = (Image)sender;
-            CustomPattern pattern = (CustomPattern)imageButton.BindingContext;
-
-            if (pattern.IsFavorite)
-            {
-                pattern.ImageButton = ImageSource.FromFile("unfav.png");
-                pattern.IsFavorite = false;
-                FavoriteRecipe favoriteRecipe = await database.GetFavoriteRecipe(pattern.RecipeID);
-                if (favoriteRecipe != null)
-                {
-                    await database.DeleteFavoriteRecipe(favoriteRecipe);
-                }
-            }
-            else
-            {
-                pattern.ImageButton = ImageSource.FromFile("fav.png");
-                pattern.IsFavorite = true;
-                FavoriteRecipe favoriteRecipe = new FavoriteRecipe
-                {
-                    UserID = Database.CurrentUser.Id,
-                    RecipeID = pattern.RecipeID
-                };
-                await database.AddFavoriteRecipe(favoriteRecipe);
-            }
-        }
         private async void RefreshButtonClicked(object sender, EventArgs e)
         {
             await InitializeAsync();
             flexLayout.SetBinding(BindableLayout.ItemsSourceProperty, new Binding("Patterns"));
         }
-        private async Task InitializeAsync() 
+        private async Task InitializeAsync()
         {
-            database = new Database("database.db3");
-            
+            Database database = new Database("database.db3");
+
             viewModel = new PatternViewModel();
-            viewModel.Patterns = await viewModel.RandomRecipe();
+            viewModel.Patterns = await viewModel.UserRecipes();
 
             BindingContext = viewModel;
 
@@ -139,25 +123,12 @@ namespace Spicify.Views
                 };
                 image.SetBinding(Image.SourceProperty, "ImageSource");
 
-                Image imageButton = new Image
-                {
-                    HeightRequest = 45,
-                    WidthRequest = 45,
-                };
-                imageButton.SetBinding(Image.SourceProperty, "ImageButton");
-
                 relativeLayout.Children.Add(stackLayout,
                     Constraint.RelativeToParent((parent) => parent.Width - frame.WidthRequest),
                     Constraint.RelativeToParent((parent) => parent.Height - frame.HeightRequest));
 
-                relativeLayout.Children.Add(imageButton,
-                    Constraint.RelativeToParent((parent) => parent.Width - imageButton.WidthRequest),
-                    Constraint.RelativeToParent((parent) => parent.Height - imageButton.HeightRequest));
-
                 TapGestureRecognizer tapGestureRecognizer = new TapGestureRecognizer();
                 TapGestureRecognizer tapGestureRecognizerFrame = new TapGestureRecognizer();
-                tapGestureRecognizer.Tapped += ImageChangeTapped;
-                imageButton.GestureRecognizers.Add(tapGestureRecognizer);
                 tapGestureRecognizerFrame.Tapped += FrameRecipeOpen;
                 frame.GestureRecognizers.Add(tapGestureRecognizerFrame);
                 stackLayout.Children.Add(nameLabel);
@@ -173,8 +144,5 @@ namespace Spicify.Views
 
             this.Content = scrollView;
         }
-
-
-
     }
 }

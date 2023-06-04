@@ -14,6 +14,7 @@ namespace Spicify.Models
         public string Description { get; set; }
         public bool IsFavorite { get; set; }
         public string Ingredients { get; set; }
+        public string CookingInstruction { get; set; }
         public int InitialRecipeID { get; set; }
         public int UserID { get; set; }
     }

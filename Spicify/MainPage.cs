@@ -15,6 +15,7 @@ namespace Spicify
         private Recipe recipePage;
         private LoginRegisterPage loginRegisterPage;
         private FavoritePage favoritePage;
+        private UserRecipeList userRecipeList;
 
         public MainPage()
         {
@@ -22,21 +23,44 @@ namespace Spicify
             recipePage = new Recipe();
             loginRegisterPage = new LoginRegisterPage();
             favoritePage = new FavoritePage();
+            userRecipeList = new UserRecipeList();
 
-            var searchNavigation = new NavigationPage(searchPage)
+            var buttonStyle = new Style(typeof(Button))
             {
-                Title = "Search",
-                IconImageSource = "search_icon.png"
+                Setters = {
+                    new Setter { Property = Button.BackgroundColorProperty, Value = Color.FromHex("#2196F3") },
+                    new Setter { Property = Button.TextColorProperty, Value = Color.White },
+                    new Setter { Property = Button.MarginProperty, Value = new Thickness(0, 10) }
+                }
             };
 
-            var recipeNavigation = new NavigationPage(recipePage)
+            var menuButtonStyle = new Style(typeof(Button))
+            {
+                BasedOn = buttonStyle,
+                Setters = {
+                    new Setter { Property = Button.WidthRequestProperty, Value = 200 },
+                    new Setter { Property = Button.FontSizeProperty, Value = 18 }
+                }
+            };
+
+            NavigationPage searchNavigation = new NavigationPage(searchPage)
+            {
+                Title = "Search",
+            };
+
+            NavigationPage recipeNavigation = new NavigationPage(recipePage)
             {
                 Title = "Recipe"
             };
 
-            var favNavigation = new NavigationPage(favoritePage)
+            NavigationPage favNavigation = new NavigationPage(favoritePage)
             {
                 Title = "Favorite"
+            };
+
+            NavigationPage userRecipeNavigation = new NavigationPage(userRecipeList)
+            {
+                Title = "Your Recipes"
             };
 
             Master = new ContentPage
@@ -52,7 +76,8 @@ namespace Spicify
                             {
                                 Detail = searchNavigation;
                                 IsPresented = false;
-                            })
+                            }),
+                            Style = menuButtonStyle
                         },
                         new Button
                         {
@@ -61,7 +86,8 @@ namespace Spicify
                             {
                                 Detail = recipeNavigation;
                                 IsPresented = false;
-                            })
+                            }),
+                            Style = menuButtonStyle
                         },
                         new Button
                         {
@@ -70,7 +96,18 @@ namespace Spicify
                             {
                                 Detail = favNavigation;
                                 IsPresented = false;
-                            })
+                            }),
+                            Style = menuButtonStyle
+                        },
+                        new Button
+                        {
+                            Text = "Your Recipes",
+                            Command = new Command(() =>
+                            {
+                                Detail = userRecipeNavigation;
+                                IsPresented = false;
+                            }),
+                            Style = menuButtonStyle
                         },
                         new Button
                         {
@@ -79,10 +116,12 @@ namespace Spicify
                             {
                                 Database.CurrentUser = null;
                                 Application.Current.MainPage = loginRegisterPage;
-                            })
+                            }),
+                            Style = menuButtonStyle
                         }
 
-                    }
+                    },
+                    Margin = new Thickness(20)
                 }
             };
 

@@ -64,23 +64,35 @@ namespace Spicify.ViewModels
 
         private async Task LoginAsync()
         {
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Please enter a username and password", "OK");
+                return;
+            }
+
             var user = await _databaseService.GetUserByUsernameAsync(Username);
 
             if (user != null && user.Password == Password)
             {
-                await Application.Current.MainPage.DisplayAlert("Успех", "Вход выполнен успешно", "OK");
+                await Application.Current.MainPage.DisplayAlert("Success", "Login successful", "OK");
                 Database.CurrentUser = user;
                 MainPage mainPage = new MainPage();
                 Application.Current.MainPage = mainPage;
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Ошибка", "Неверные учетные данные", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "Invalid credentials", "OK");
             }
         }
 
         private async Task RegisterAsync()
         {
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "Please enter a username and password", "OK");
+                return;
+            }
+
             var user = await _databaseService.GetUserByUsernameAsync(Username);
 
             if (user == null)
@@ -93,15 +105,16 @@ namespace Spicify.ViewModels
                 };
 
                 await _databaseService.CreateUserAsync(user);
-                await Application.Current.MainPage.DisplayAlert("Успех", "Пользователь зарегистрирован", "OK");
+                await Application.Current.MainPage.DisplayAlert("Success", "User registered successfully", "OK");
             }
             else
             {
-                await Application.Current.MainPage.DisplayAlert("Ошибка", "Пользователь с таким именем уже существует", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", "A user with the same username already exists", "OK");
             }
         }
 
     }
+
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

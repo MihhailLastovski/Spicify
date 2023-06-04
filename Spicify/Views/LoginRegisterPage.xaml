@@ -8,9 +8,9 @@
     </ContentPage.BindingContext>
 
     <StackLayout Padding="20">
-        <Entry Text="{Binding Username}" Placeholder="Имя пользователя" />
-        <Entry Text="{Binding Password}" Placeholder="Пароль" IsPassword="True" />
-        <Button Text="Вход" Command="{Binding LoginCommand}" />
-        <Button Text="Регистрация" Command="{Binding RegisterCommand}" />
+        <Entry Text="{Binding Username}" Placeholder="Username" />
+        <Entry Text="{Binding Password}" Placeholder="Password" IsPassword="True" />
+        <Button Text="Login" Command="{Binding LoginCommand}" />
+        <Button Text="Register" Command="{Binding RegisterCommand}" />
     </StackLayout>
 </ContentPage>

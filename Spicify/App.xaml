@@ -3,6 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Spicify.App">
     <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="LauncherBackgroundColor">#FFFFFF</Color>
+            <Color x:Key="PrimaryColor">#ADA7A7</Color>
+            <Color x:Key="PrimaryDarkColor">#D37506</Color>
+            <Color x:Key="AccentColor">#9F2B00</Color>
 
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

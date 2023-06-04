@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -140,6 +141,28 @@ namespace Spicify.ViewModels
             return patterns;
         }
 
+        public async Task<ObservableCollection<CustomPattern>> UserRecipes()
+        {
+            Patterns = new ObservableCollection<CustomPattern>();
+            List<Models.Recipe> recipes = await database.GetRecipesAsync();
+            ObservableCollection<CustomPattern> patterns = new ObservableCollection<CustomPattern>();
+
+
+            for (int i = 0; i < recipes.Count; i++)
+            {
+                CustomPattern pattern = new CustomPattern
+                {
+                    NameLabel = recipes[i].RecipeTitle,
+                    ImageSource = recipes[i].ImageSource,
+                    Description = recipes[i].Description,
+                    Ingredients = recipes[i].Ingredients.Split(',').ToList(),
+                };
+
+                patterns.Add(pattern);
+            }
+
+            return patterns;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
