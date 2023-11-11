@@ -13,7 +13,7 @@ namespace Spicify
     public class RecipeAPI
     {
         private const string API_HOST = "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com";
-        private const string API_KEY = "be43cea060mshc4dd49f4a6c7a6fp1f9a6ejsn5aa22bdcfd70";
+        private const string API_KEY = "";
 
         public static List<MyObject> SearchRecipesByIngredients(string[] ingredients)
         {
